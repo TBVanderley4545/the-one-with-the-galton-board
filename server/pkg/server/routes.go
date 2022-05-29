@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"github.com/TBVanderley4545/the-one-with-the-galton-board/pkg/galton"
+	"github.com/TBVanderley4545/the-one-with-the-galton-board/pkg/utils"
 	"log"
 	"net/http"
 	"strconv"
@@ -16,7 +16,7 @@ func RootRoute(w http.ResponseWriter, r *http.Request) {
 
 	numberToDouble, err := strconv.ParseFloat(r.URL.Query().Get("double"), 64)
 
-	doubledNumber := galton.Double(numberToDouble)
+	doubledNumber := utils.Double(numberToDouble)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
