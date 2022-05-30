@@ -21,8 +21,9 @@
   import GaltonBoard from './lib/GaltonBoard.svelte';
 </script>
 
-<style>
+<style lang="scss">
   :root {
+    background-color: #1c1b1a;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
       'Open Sans', 'Helvetica Neue', sans-serif;
   }
