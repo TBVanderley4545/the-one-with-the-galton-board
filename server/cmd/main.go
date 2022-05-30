@@ -8,6 +8,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", server.RootRoute)
+	http.HandleFunc("/galton-board/", server.SocketHandler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
