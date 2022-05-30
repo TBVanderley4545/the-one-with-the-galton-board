@@ -6,11 +6,17 @@
   let reconnectInterval: NodeJS.Timer;
 
   const pollConnection = () => {
-    if (socketOpen !== 1) {
-      connectSocket();
-    } else {
-      console.log('already connected.');
+    if (reconnectInterval) {
+      return;
     }
+
+    reconnectInterval = setInterval(() => {
+      if (socketOpen !== 1) {
+        connectSocket();
+      } else {
+        console.log('already connected.');
+      }
+    }, 1000);
   };
 
   const connectSocket = () => {
@@ -25,17 +31,13 @@
     });
 
     socket.addEventListener('close', (_) => {
-      if (!reconnectInterval) {
-        reconnectInterval = setInterval(pollConnection, 1000);
-      }
+      pollConnection();
 
       socketOpen = socket.CLOSED;
     });
   };
 
-  if (!reconnectInterval) {
-    reconnectInterval = setInterval(pollConnection, 1000);
-  }
+  pollConnection();
 </script>
 
 <style lang="scss">
