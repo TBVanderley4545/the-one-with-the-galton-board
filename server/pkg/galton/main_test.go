@@ -1,34 +1,33 @@
 package galton_test
 
 import (
-//	"fmt"
 	"testing"
 
 	galton "github.com/TBVanderley4545/the-one-with-the-galton-board/pkg/galton"
 )
 
-// func TestAddBall(t *testing.T) {
-// 	currentBoard := galton.CreateBoard(4)
-// 
-// 	currentBoard.AddBall()
-// 	currentBoard.AddBall()
-// 	currentBoard.AddBall()
-// 
-// 	expected := 4
-// 
-// 	actual := 0
-// 
-// 	for i, c := range currentBoard.Columns {
-// 		fmt.Println(i, len(c))
-// 		actual += len(c)
-// 	}
-// 
-// 	if actual != expected {
-// 		t.Errorf("Expected the board to have %d balls, but it had %d",
-// 			expected,
-// 			actual)
-// 	}
-// }
+func TestAddBall(t *testing.T) {
+	currentBoard := galton.CreateBoard(4)
+
+	currentBoard.AddBall()
+	currentBoard.AddBall()
+	currentBoard.AddBall()
+	currentBoard.AddBall()
+
+	expected := 4
+
+	actual := 0
+
+	for _, c := range currentBoard.Columns {
+		actual += len(c)
+	}
+
+	if actual != expected {
+		t.Errorf("Expected the board to have %d balls, but it had %d",
+			expected,
+			actual)
+	}
+}
 
 func TestCreateBoard(t *testing.T) {
 	currentBoard := galton.CreateBoard(9)

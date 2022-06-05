@@ -14,7 +14,13 @@ func (gb *GaltonBoard) AddBall() {
 	newBall := Ball{}
 	newBall.Drop(gb.DecisionDepth)
 
-	column := newBall.NetOffset - gb.StartingColumnIndex
+	columnAdjuster := 0
+
+  if len(gb.Columns) % 2 == 0 && newBall.NetOffset > 0 {
+    columnAdjuster = 1
+  }
+
+	column := newBall.NetOffset - gb.StartingColumnIndex - columnAdjuster
 
 	gb.Columns[column] = append(gb.Columns[column], &newBall)
 }
@@ -26,7 +32,7 @@ func CreateBoard(gridDepth int) GaltonBoard {
 	currentBoard := GaltonBoard{
 		DecisionDepth:       gridDepth,
 		Columns:             make([][]*Ball, columnCount),
-		StartingColumnIndex: int(math.Ceil(float64(columnCount/2))) * -1,
+		StartingColumnIndex: int(math.Ceil(float64(-columnCount / 2))),
 	}
 
 	return currentBoard
