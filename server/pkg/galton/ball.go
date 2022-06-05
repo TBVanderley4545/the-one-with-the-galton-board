@@ -11,9 +11,9 @@ type Ball struct {
 }
 
 func CalcuateNetOffset(netMovement int) int {
-  if netMovement == 0 {
-    return 0
-  }
+	if netMovement == 0 {
+		return 0
+	}
 
 	return int(math.Floor((math.Abs(float64(netMovement))+1)/2)) * int(int(math.Abs(float64(netMovement)))/netMovement)
 }
