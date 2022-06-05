@@ -27,8 +27,12 @@ func TestDrop(t *testing.T) {
 }
 
 func TestCalcuateNetOffset(t *testing.T) {
+	newBall := galton.Ball{}
+
+	newBall.SetNetOffset(-8)
+
 	expected := -4
-	actual := galton.CalcuateNetOffset(-8)
+	actual := newBall.NetOffset
 
 	if expected != actual {
 		t.Errorf("Expected the net offset to be %d, but it was %d",

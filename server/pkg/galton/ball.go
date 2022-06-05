@@ -5,19 +5,24 @@ import (
 	"math/rand"
 )
 
+// Representation of a ball on a Galton Board
 type Ball struct {
 	Decisions []Decision
 	NetOffset int
 }
 
-func CalcuateNetOffset(netMovement int) int {
+// Set the net offset of a ball from the furthest left column of a Galton Board
+func (b *Ball) SetNetOffset(netMovement int) {
 	if netMovement == 0 {
-		return 0
+		b.NetOffset = 0
+
+		return
 	}
 
-	return int(math.Floor((math.Abs(float64(netMovement))+1)/2)) * int(int(math.Abs(float64(netMovement)))/netMovement)
+	b.NetOffset = int(math.Floor((math.Abs(float64(netMovement))+1)/2)) * int(int(math.Abs(float64(netMovement)))/netMovement)
 }
 
+// Simulate dropping a ball onto a Galton Board that has a grid of n depth
 func (b *Ball) Drop(decisionCount int) {
 	NetMovement := 0
 
@@ -31,5 +36,5 @@ func (b *Ball) Drop(decisionCount int) {
 		}
 	}
 
-	b.NetOffset = CalcuateNetOffset(NetMovement)
+	b.SetNetOffset(NetMovement)
 }

@@ -4,12 +4,14 @@ import (
 	"math"
 )
 
+// Representation of a Galton Board
 type GaltonBoard struct {
 	DecisionDepth       int
 	Columns             [][]*Ball
 	StartingColumnIndex int
 }
 
+// Add a new ball to a Galton Board
 func (gb *GaltonBoard) AddBall() {
 	newBall := Ball{}
 	newBall.Drop(gb.DecisionDepth)
@@ -25,6 +27,7 @@ func (gb *GaltonBoard) AddBall() {
 	gb.Columns[column] = append(gb.Columns[column], &newBall)
 }
 
+// Add n balls to a Galton Board
 func (gb *GaltonBoard) AddBalls(numberToAdd int) {
 	for i := 0; i < numberToAdd; i++ {
 		gb.AddBall()
