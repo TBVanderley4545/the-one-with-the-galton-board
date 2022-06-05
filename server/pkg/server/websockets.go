@@ -1,6 +1,8 @@
 package server
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -13,6 +15,11 @@ var upgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
 	return origin == "http://localhost:3000"
 }}
 
+type SocketMessage struct {
+	MessageText string `json:"msg"`
+	TimeStamp   int    `json:"timestamp"`
+}
+
 func SocketHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 
@@ -24,6 +31,7 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		messageType, message, err := conn.ReadMessage()
+		var decodedMessage SocketMessage
 
 		if err != nil {
 			log.Println("Error reading message: ", err)
@@ -32,7 +40,15 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 
 		log.Printf("Message: %s", message)
 
-		err = conn.WriteMessage(messageType, message)
+		if err := json.Unmarshal(message, &decodedMessage); err != nil {
+			upgrader.Error(w, r, http.StatusBadRequest, err)
+
+			log.Print("Error parsing json: ", err)
+		}
+
+		fmt.Println(decodedMessage.TimeStamp)
+
+		err = conn.WriteMessage(messageType, []byte("Message has been received"))
 
 		if err != nil {
 			log.Println("Error writing message: ", err)

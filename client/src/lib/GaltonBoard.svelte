@@ -1,9 +1,11 @@
 <h2>This is the Galton Board</h2>
 <h3>The socket is currently: {socketOpen === 1 ? '🟢' : '🛑'}</h3>
+<p>Message from the socket: {socketMessage}</p>
 
 <script lang="ts">
   let socketOpen: number;
   let reconnectInterval: NodeJS.Timer;
+  let socketMessage: string;
 
   const pollConnection = () => {
     if (reconnectInterval) {
@@ -26,8 +28,18 @@
       clearInterval(reconnectInterval);
       reconnectInterval = null;
 
-      socket.send('Hello server!');
+      socket.send(
+        JSON.stringify({
+          msg: 'Hello server!',
+          timestamp: Date.now(),
+        })
+      );
+
       socketOpen = socket.readyState;
+    });
+
+    socket.addEventListener('message', (ev) => {
+      socketMessage = ev.data;
     });
 
     socket.addEventListener('close', (_) => {
@@ -44,5 +56,9 @@
   h2,
   h3 {
     color: #ff3e00;
+  }
+
+  p {
+    color: #aaaaaa;
   }
 </style>
