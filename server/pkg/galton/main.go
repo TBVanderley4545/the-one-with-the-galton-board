@@ -25,6 +25,12 @@ func (gb *GaltonBoard) AddBall() {
 	gb.Columns[column] = append(gb.Columns[column], &newBall)
 }
 
+func (gb *GaltonBoard) AddBalls(numberToAdd int) {
+	for i := 0; i < numberToAdd; i++ {
+		gb.AddBall()
+	}
+}
+
 // Create a Galton Board with a given grid depth
 func CreateBoard(gridDepth int) GaltonBoard {
 	columnCount := gridDepth + 1
