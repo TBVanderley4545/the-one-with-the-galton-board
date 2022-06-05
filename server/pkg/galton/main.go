@@ -16,9 +16,9 @@ func (gb *GaltonBoard) AddBall() {
 
 	columnAdjuster := 0
 
-  if len(gb.Columns) % 2 == 0 && newBall.NetOffset > 0 {
-    columnAdjuster = 1
-  }
+	if len(gb.Columns)%2 == 0 && newBall.NetOffset > 0 {
+		columnAdjuster = 1
+	}
 
 	column := newBall.NetOffset - gb.StartingColumnIndex - columnAdjuster
 
