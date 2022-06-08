@@ -3,6 +3,8 @@
 <p>Message from the socket: {socketMessage}</p>
 
 <script lang="ts">
+  import { ClientMessages } from './utilities/sockets';
+
   let socketOpen: number;
   let reconnectInterval: NodeJS.Timer;
   let socketMessage: string;
@@ -30,7 +32,7 @@
 
       socket.send(
         JSON.stringify({
-          msg: 'Hello server!',
+          msg: ClientMessages.opened,
           timestamp: Date.now(),
         })
       );
