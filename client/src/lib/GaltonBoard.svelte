@@ -3,6 +3,7 @@
 <p>Message from the socket: {socketMessage}</p>
 
 <script lang="ts">
+  import type { GaltonBoard } from './types/GaltonBoard';
   import { ClientMessages } from './utilities/sockets';
 
   let socketOpen: number;
@@ -25,6 +26,7 @@
 
   const connectSocket = () => {
     let socket = new WebSocket('ws://localhost:8080/galton-board/');
+    let board: GaltonBoard;
 
     socket.addEventListener('open', (_) => {
       clearInterval(reconnectInterval);
