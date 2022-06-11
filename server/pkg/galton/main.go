@@ -4,6 +4,8 @@ import (
 	"math"
 )
 
+var CurrentBoard GaltonBoard
+
 // Create a Galton Board with a given grid depth
 func CreateBoard(gridDepth int) GaltonBoard {
 	columnCount := gridDepth + 1
