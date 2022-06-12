@@ -39,7 +39,7 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if decodedMessage.MessageText == string(NewObserver) {
-			if err := handleNewConnection(conn, messageType);"new observer"  err != nil {
+			if err := handleNewConnection(conn, messageType); err != nil {
 				break
 			}
 		}
