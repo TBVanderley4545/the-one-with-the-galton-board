@@ -8,9 +8,11 @@
     <button type="submit">Submit</button>
   </form>
 {:else}
-  <p>
-    {JSON.stringify(board)}
-  </p>
+  <div>
+    {#each board.Columns as column, idx}
+      <p>Column {idx}: {column?.length ?? 0} ball(s)</p>
+    {/each}
+  </div>
   <button on:click={handleAddBall}>Add Ball</button>
 {/if}
 
@@ -86,7 +88,7 @@
       quantity: 1,
     };
 
-    socket.send(JSON.stringify(message))
+    socket.send(JSON.stringify(message));
   };
 
   pollConnection();
