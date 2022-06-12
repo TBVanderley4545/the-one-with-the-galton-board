@@ -18,7 +18,7 @@
 
     <button class="galton-board__reset" on:click={handleResetBoard}>Reset board</button>
 
-    <p>Ball count: {ballCount}</p>
+    <p class="galton-board__count">Ball count: {ballCount}</p>
 
     <div class="galton-board">
       {#each board.Columns as column, idx}
@@ -183,6 +183,12 @@
 
     &__reset {
       margin: 0em auto 1em;
+    }
+
+    &__count {
+      color: #ff3e00;
+      font-size: 1.25em;
+      margin: 0 auto 1em;
     }
 
     &__column-wrap {
