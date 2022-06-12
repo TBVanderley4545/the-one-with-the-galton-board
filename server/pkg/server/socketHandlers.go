@@ -77,5 +77,5 @@ func handleResetBoard(conn *websocket.Conn, messageType int, pool *ConnectionPoo
 
 	galton.CurrentBoard = galton.GaltonBoard{}
 
-	return sendBoardState(conn, messageType)
+	return broadcastBoardState(pool, messageType)
 }
