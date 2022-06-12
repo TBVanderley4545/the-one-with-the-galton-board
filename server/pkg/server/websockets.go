@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/TBVanderley4545/the-one-with-the-galton-board/pkg/galton"
 	"github.com/gorilla/websocket"
 )
 
@@ -14,11 +13,6 @@ var upgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
 
 	return origin == "http://localhost:3000"
 }}
-
-type ClientMessage struct {
-	MessageText string `json:"msg"`
-	TimeStamp   int    `json:"timestamp"`
-}
 
 func SocketHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -44,26 +38,9 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 			log.Print("Error parsing json: ", err)
 		}
 
-		if decodedMessage.MessageText == "new observer" {
-			log.Println("We have a new observer!!")
-
-			if len(galton.CurrentBoard.Columns) == 0 {
-				log.Println("Creating new board")
-				galton.CurrentBoard = galton.CreateBoard(10)
-			} else {
-				log.Println("Board already exists.")
-				log.Println(galton.CurrentBoard)
-			}
-
-			if boardState, err := json.Marshal(galton.CurrentBoard); err != nil {
-				log.Print("Error parsing json: ", err)
-
-				err = conn.WriteMessage(messageType, []byte(boardState))
-
-				if err != nil {
-					log.Println("Error writing message: ", err)
-					break
-				}
+		if decodedMessage.MessageText == string(NewObserver) {
+			if err := handleNewConnection(conn, messageType);"new observer"  err != nil {
+				break
 			}
 		}
 
