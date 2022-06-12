@@ -8,6 +8,12 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+type ConnectionPool struct {
+	Connections []*websocket.Conn
+}
+
+var GaltonConnections = ConnectionPool{}
+
 var upgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
 	origin := r.Header.Get("Origin")
 
@@ -41,19 +47,19 @@ socketLoop:
 
 		switch decodedMessage.MessageText {
 		case string(NewObserver):
-			if err := handleNewConnection(conn, messageType); err != nil {
+			if err := handleNewConnection(conn, messageType, &GaltonConnections); err != nil {
 				break socketLoop
 			}
 		case string(CreateBoard):
-			if err := handleNewBoardRequest(conn, messageType, decodedMessage.Quantity); err != nil {
+			if err := handleNewBoardRequest(conn, messageType, &GaltonConnections, decodedMessage.Quantity); err != nil {
 				break socketLoop
 			}
 		case string(AddBalls):
-			if err := handleAddBallsRequest(conn, messageType, decodedMessage.Quantity); err != nil {
+			if err := handleAddBallsRequest(conn, messageType, &GaltonConnections, decodedMessage.Quantity); err != nil {
 				break socketLoop
 			}
 		case string(ResetBoard):
-			if err := handleResetBoard(conn, messageType); err != nil {
+			if err := handleResetBoard(conn, messageType, &GaltonConnections); err != nil {
 				break socketLoop
 			}
 		}
