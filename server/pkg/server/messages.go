@@ -17,4 +17,5 @@ const (
 	NewObserver MessageName = "new observer"
 	CreateBoard MessageName = "create board"
 	BoardState  MessageName = "board state"
+	AddBalls    MessageName = "add balls"
 )

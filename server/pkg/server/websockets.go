@@ -48,6 +48,10 @@ socketLoop:
 			if err := handleNewBoardRequest(conn, messageType, decodedMessage.Quantity); err != nil {
 				break socketLoop
 			}
+		case string(AddBalls):
+			if err := handleAddBallsRequest(conn, messageType, decodedMessage.Quantity); err != nil {
+				break socketLoop
+			}
 		}
 	}
 }

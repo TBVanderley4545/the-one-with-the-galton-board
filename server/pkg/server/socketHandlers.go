@@ -47,3 +47,11 @@ func handleNewBoardRequest(conn *websocket.Conn, messageType int, gridDepth int)
 
 	return sendBoardState(conn, messageType)
 }
+
+func handleAddBallsRequest(conn *websocket.Conn, messageType int, addBallCount int) error {
+	log.Printf("Adding %d ball(s) to the board", addBallCount)
+
+	galton.CurrentBoard.AddBalls(addBallCount)
+
+	return sendBoardState(conn, messageType)
+}

@@ -1,21 +1,26 @@
 <h2>This is the Galton Board</h2>
 <h3>The socket is currently: {socketOpen === 1 ? '🟢' : '🛑'}</h3>
-<p>Message from the socket: {socketMessage}</p>
 
-<form on:submit|preventDefault={handleFormSubmit}>
-  <input id="quantity" type="number" />
-  <label for="quantity">Enter the number of levels to have for the board.</label>
-  <button type="submit">Submit</button>
-</form>
+{#if !board || !board.Columns || board.Columns.length === 0}
+  <form on:submit|preventDefault={handleFormSubmit}>
+    <input id="quantity" type="number" />
+    <label for="quantity">Enter the number of levels to have for the board.</label>
+    <button type="submit">Submit</button>
+  </form>
+{:else}
+  <p>
+    {JSON.stringify(board)}
+  </p>
+  <button on:click={handleAddBall}>Add Ball</button>
+{/if}
 
 <script lang="ts">
   import type { GaltonBoard } from './types/GaltonBoard';
-  import { SocketMessage, ClientMessages } from './utilities/sockets';
+  import { SocketClientMessage, SocketServerMessage, ClientMessages } from './utilities/sockets';
 
   let socket: WebSocket;
   let socketOpen: number;
   let reconnectInterval: NodeJS.Timer;
-  let socketMessage: string;
   let board: GaltonBoard;
 
   const pollConnection = () => {
@@ -39,7 +44,7 @@
       clearInterval(reconnectInterval);
       reconnectInterval = null;
 
-      const message: SocketMessage = {
+      const message: SocketClientMessage = {
         msg: ClientMessages.Opened,
       };
 
@@ -49,7 +54,11 @@
     });
 
     socket.addEventListener('message', (ev) => {
-      socketMessage = ev.data;
+      const parsedData: SocketServerMessage = JSON.parse(ev.data);
+
+      if (parsedData.MessageName === ClientMessages.BoardState) {
+        board = parsedData.MessageData;
+      }
     });
 
     socket.addEventListener('close', (_) => {
@@ -63,12 +72,21 @@
     const submittedFormElm = <HTMLFormElement>e.currentTarget;
     const boardDepth = submittedFormElm.elements['quantity'].value;
 
-    const message: SocketMessage = {
+    const message: SocketClientMessage = {
       msg: ClientMessages.CreateBoard,
       quantity: Number.parseInt(boardDepth),
     };
 
     socket.send(JSON.stringify(message));
+  };
+
+  const handleAddBall = () => {
+    const message: SocketClientMessage = {
+      msg: ClientMessages.AddBalls,
+      quantity: 1,
+    };
+
+    socket.send(JSON.stringify(message))
   };
 
   pollConnection();

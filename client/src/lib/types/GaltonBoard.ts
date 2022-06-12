@@ -1,4 +1,6 @@
+import type { GaltonBall } from './GaltonBall';
+
 export interface GaltonBoard {
-  decisionDepth: number;
-  columns: Array<number>;
+  DecisionDepth: number;
+  Columns: Array<Array<GaltonBall>>;
 }
