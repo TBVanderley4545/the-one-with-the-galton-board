@@ -18,6 +18,8 @@
 
     <button class="galton-board__reset" on:click={handleResetBoard}>Reset board</button>
 
+    <p>Ball count: {ballCount}</p>
+
     <div class="galton-board">
       {#each board.Columns as column, idx}
         <div class="galton-board__column-wrap">
@@ -25,7 +27,7 @@
             <span>
               {column?.length ?? 0} ball(s)
             </span>
-            <div class="galton-board__column-fill" style="height: {(column?.length ?? 0)}px" />
+            <div class="galton-board__column-fill" style="height: {column?.length ?? 0}px" />
           </div>
           <p>Column {idx + 1}</p>
         </div>
@@ -35,6 +37,8 @@
 {/if}
 
 <script lang="ts">
+  import type { GaltonBall } from './types/GaltonBall';
+
   import type { GaltonBoard } from './types/GaltonBoard';
   import { SocketClientMessage, SocketServerMessage, ClientMessages } from './utilities/sockets';
 
@@ -42,6 +46,7 @@
   let socketOpen: number;
   let reconnectInterval: NodeJS.Timer;
   let board: GaltonBoard;
+  let ballCount = 0;
 
   const pollConnection = () => {
     if (reconnectInterval) {
@@ -78,6 +83,12 @@
 
       if (parsedData.MessageName === ClientMessages.BoardState) {
         board = parsedData.MessageData;
+
+        if (board.Columns) {
+          ballCount = board.Columns.reduce((acc: number, curr: Array<GaltonBall>) => {
+            return curr ? acc + curr.length : acc;
+          }, 0);
+        }
       }
     });
 
