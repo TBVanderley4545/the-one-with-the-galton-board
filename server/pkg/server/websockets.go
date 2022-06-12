@@ -44,6 +44,10 @@ socketLoop:
 			if err := handleNewConnection(conn, messageType); err != nil {
 				break socketLoop
 			}
+		case string(CreateBoard):
+			if err := handleNewBoardRequest(conn, messageType, decodedMessage.Quantity); err != nil {
+				break socketLoop
+			}
 		}
 	}
 }

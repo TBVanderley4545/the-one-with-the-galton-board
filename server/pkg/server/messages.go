@@ -2,7 +2,7 @@ package server
 
 type ClientMessage struct {
 	MessageText string `json:"msg"`
-	TimeStamp   int    `json:"timestamp"`
+	Quantity    int    `json:"quantity"`
 }
 
 type ServerMessage struct {
@@ -14,6 +14,7 @@ type ServerMessage struct {
 type MessageName string
 
 const (
-	BoardState  MessageName = "board state"
 	NewObserver MessageName = "new observer"
+	CreateBoard MessageName = "create board"
+	BoardState  MessageName = "board state"
 )
