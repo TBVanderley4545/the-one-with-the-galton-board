@@ -18,4 +18,5 @@ const (
 	CreateBoard MessageName = "create board"
 	BoardState  MessageName = "board state"
 	AddBalls    MessageName = "add balls"
+	ResetBoard  MessageName = "reset board"
 )

@@ -55,3 +55,11 @@ func handleAddBallsRequest(conn *websocket.Conn, messageType int, addBallCount i
 
 	return sendBoardState(conn, messageType)
 }
+
+func handleResetBoard(conn *websocket.Conn, messageType int) error {
+	log.Println("Clearing the board.")
+
+	galton.CurrentBoard = galton.GaltonBoard{}
+
+	return sendBoardState(conn, messageType)
+}

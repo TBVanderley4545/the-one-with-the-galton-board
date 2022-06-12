@@ -5,6 +5,7 @@ export enum ClientMessages {
   CreateBoard = 'create board',
   BoardState = 'board state',
   AddBalls = 'add balls',
+  ResetBoard = 'reset board',
 }
 
 export interface SocketClientMessage {
