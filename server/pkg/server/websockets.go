@@ -47,19 +47,19 @@ socketLoop:
 
 		switch decodedMessage.MessageText {
 		case string(NewObserver):
-			if err := handleNewConnection(conn, messageType, &GaltonConnections); err != nil {
+			if err := handleNewConnection(conn, &GaltonConnections, messageType); err != nil {
 				break socketLoop
 			}
 		case string(CreateBoard):
-			if err := handleNewBoardRequest(conn, messageType, &GaltonConnections, decodedMessage.Quantity); err != nil {
+			if err := handleNewBoardRequest(&GaltonConnections, messageType, decodedMessage.Quantity); err != nil {
 				break socketLoop
 			}
 		case string(AddBalls):
-			if err := handleAddBallsRequest(conn, messageType, &GaltonConnections, decodedMessage.Quantity); err != nil {
+			if err := handleAddBallsRequest(&GaltonConnections, messageType, decodedMessage.Quantity); err != nil {
 				break socketLoop
 			}
 		case string(ResetBoard):
-			if err := handleResetBoard(conn, messageType, &GaltonConnections); err != nil {
+			if err := handleResetBoard(&GaltonConnections, messageType); err != nil {
 				break socketLoop
 			}
 		}

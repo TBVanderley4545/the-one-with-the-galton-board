@@ -45,7 +45,7 @@ func broadcastBoardState(pool *ConnectionPool, messageType int) error {
 	return err
 }
 
-func handleNewConnection(conn *websocket.Conn, messageType int, pool *ConnectionPool) error {
+func handleNewConnection(conn *websocket.Conn, pool *ConnectionPool, messageType int) error {
 	log.Println("We have a new observer!")
 
 	pool.Connections = append(pool.Connections, conn)
@@ -53,7 +53,7 @@ func handleNewConnection(conn *websocket.Conn, messageType int, pool *Connection
 	return sendBoardState(conn, messageType)
 }
 
-func handleNewBoardRequest(conn *websocket.Conn, messageType int, pool *ConnectionPool, gridDepth int) error {
+func handleNewBoardRequest(pool *ConnectionPool, messageType int, gridDepth int) error {
 	if len(galton.CurrentBoard.Columns) == 0 {
 		log.Println("Creating new board")
 		galton.CurrentBoard = galton.CreateBoard(gridDepth)
@@ -64,7 +64,7 @@ func handleNewBoardRequest(conn *websocket.Conn, messageType int, pool *Connecti
 	return broadcastBoardState(pool, messageType)
 }
 
-func handleAddBallsRequest(conn *websocket.Conn, messageType int, pool *ConnectionPool, addBallCount int) error {
+func handleAddBallsRequest(pool *ConnectionPool, messageType int, addBallCount int) error {
 	log.Printf("Adding %d ball(s) to the board", addBallCount)
 
 	galton.CurrentBoard.AddBalls(addBallCount)
@@ -72,7 +72,7 @@ func handleAddBallsRequest(conn *websocket.Conn, messageType int, pool *Connecti
 	return broadcastBoardState(pool, messageType)
 }
 
-func handleResetBoard(conn *websocket.Conn, messageType int, pool *ConnectionPool) error {
+func handleResetBoard(pool *ConnectionPool, messageType int) error {
 	log.Println("Clearing the board.")
 
 	galton.CurrentBoard = galton.GaltonBoard{}
