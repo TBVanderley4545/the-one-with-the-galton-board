@@ -8,12 +8,18 @@
     <button type="submit">Submit</button>
   </form>
 {:else}
-  <div>
+  <div class="galton-board">
     {#each board.Columns as column, idx}
-      <p>Column {idx}: {column?.length ?? 0} ball(s)</p>
+      <div class="galton-board__column">
+        <p>Column {idx}: {column?.length ?? 0} ball(s)</p>
+      </div>
     {/each}
   </div>
-  <button on:click={handleAddBall}>Add Ball</button>
+  <form on:submit|preventDefault={handleAddBalls}>
+    <input id="quantity" type="number" />
+    <label for="quantity">Enter the number of balls to add.</label>
+    <button type="submit">Submit</button>
+  </form>
 {/if}
 
 <script lang="ts">
@@ -82,10 +88,13 @@
     socket.send(JSON.stringify(message));
   };
 
-  const handleAddBall = () => {
+  const handleAddBalls = (e: SubmitEvent) => {
+    const submittedFormElm = <HTMLFormElement>e.currentTarget;
+    const quantityToAdd = submittedFormElm.elements['quantity'].value;
+
     const message: SocketClientMessage = {
       msg: ClientMessages.AddBalls,
-      quantity: 1,
+      quantity: Number.parseInt(quantityToAdd),
     };
 
     socket.send(JSON.stringify(message));
