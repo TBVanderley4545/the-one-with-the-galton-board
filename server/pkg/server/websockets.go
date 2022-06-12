@@ -23,6 +23,7 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	defer conn.Close()
 
+socketLoop:
 	for {
 		messageType, message, err := conn.ReadMessage()
 		var decodedMessage ClientMessage
@@ -38,9 +39,10 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 			log.Print("Error parsing json: ", err)
 		}
 
-		if decodedMessage.MessageText == string(NewObserver) {
+		switch decodedMessage.MessageText {
+		case string(NewObserver):
 			if err := handleNewConnection(conn, messageType); err != nil {
-				break
+				break socketLoop
 			}
 		}
 	}
