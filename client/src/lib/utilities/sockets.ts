@@ -1,3 +1,10 @@
 export enum ClientMessages {
-  opened = 'new observer',
+  Opened = 'new observer',
+  CreateBoard = 'create board',
+  BoardState = 'board state',
+}
+
+export interface SocketMessage {
+  msg: string;
+  quantity?: number;
 }

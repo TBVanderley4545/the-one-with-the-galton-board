@@ -2,13 +2,21 @@
 <h3>The socket is currently: {socketOpen === 1 ? '🟢' : '🛑'}</h3>
 <p>Message from the socket: {socketMessage}</p>
 
+<form on:submit|preventDefault={handleFormSubmit}>
+  <input id="quantity" type="number" />
+  <label for="quantity">Enter the number of levels to have for the board.</label>
+  <button type="submit">Submit</button>
+</form>
+
 <script lang="ts">
   import type { GaltonBoard } from './types/GaltonBoard';
-  import { ClientMessages } from './utilities/sockets';
+  import { SocketMessage, ClientMessages } from './utilities/sockets';
 
+  let socket: WebSocket;
   let socketOpen: number;
   let reconnectInterval: NodeJS.Timer;
   let socketMessage: string;
+  let board: GaltonBoard;
 
   const pollConnection = () => {
     if (reconnectInterval) {
@@ -25,19 +33,17 @@
   };
 
   const connectSocket = () => {
-    let socket = new WebSocket('ws://localhost:8080/galton-board/');
-    let board: GaltonBoard;
+    socket = new WebSocket('ws://localhost:8080/galton-board/');
 
     socket.addEventListener('open', (_) => {
       clearInterval(reconnectInterval);
       reconnectInterval = null;
 
-      socket.send(
-        JSON.stringify({
-          msg: ClientMessages.opened,
-          timestamp: Date.now(),
-        })
-      );
+      const message: SocketMessage = {
+        msg: ClientMessages.Opened,
+      };
+
+      socket.send(JSON.stringify(message));
 
       socketOpen = socket.readyState;
     });
@@ -51,6 +57,18 @@
 
       socketOpen = socket.CLOSED;
     });
+  };
+
+  const handleFormSubmit = (e: SubmitEvent) => {
+    const submittedFormElm = <HTMLFormElement>e.currentTarget;
+    const boardDepth = submittedFormElm.elements['quantity'].value;
+
+    const message: SocketMessage = {
+      msg: ClientMessages.CreateBoard,
+      quantity: Number.parseInt(boardDepth),
+    };
+
+    socket.send(JSON.stringify(message));
   };
 
   pollConnection();
