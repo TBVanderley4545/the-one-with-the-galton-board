@@ -43,14 +43,5 @@ func SocketHandler(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 		}
-
-		log.Println(decodedMessage.TimeStamp)
-
-		err = conn.WriteMessage(messageType, []byte("Message has been received"))
-
-		if err != nil {
-			log.Println("Error writing message: ", err)
-			break
-		}
 	}
 }

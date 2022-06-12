@@ -32,7 +32,7 @@ func sendBoardState(conn *websocket.Conn, messageType int) error {
 }
 
 func handleNewConnection(conn *websocket.Conn, messageType int) error {
-	log.Println("We have a new observer!!")
+	log.Println("We have a new observer!")
 
 	return sendBoardState(conn, messageType)
 }
