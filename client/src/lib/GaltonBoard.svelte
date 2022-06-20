@@ -38,9 +38,12 @@
 
 <script lang="ts">
   import type { GaltonBall } from './types/GaltonBall';
-
   import type { GaltonBoard } from './types/GaltonBoard';
-  import { SocketClientMessage, SocketServerMessage, ClientMessages } from './utilities/sockets';
+  import {
+    ClientMessages,
+    type SocketClientMessage,
+    type SocketServerMessage,
+  } from './utilities/sockets';
 
   let socket: WebSocket;
   let socketOpen: number;
