@@ -2,10 +2,11 @@ package server
 
 import (
 	"fmt"
-	"github.com/TBVanderley4545/the-one-with-the-galton-board/pkg/utils"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/TBVanderley4545/the-one-with-the-galton-board/pkg/utils"
 )
 
 // Function to handle the root route request.
